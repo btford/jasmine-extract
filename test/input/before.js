@@ -2,4 +2,5 @@
 
 
 var x = require('foo');
+var y = require('bar');
 describe('foo', function () {});

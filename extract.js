@@ -47,7 +47,7 @@ function extractBeforeBlocks (body) {
   body.some(function (block) {
     return isTypeofBlock('it')(block) ||
         isTypeofBlock('describe')(block) ||
-        (blocks.push(block), true);
+        (blocks.push(block), false);
   });
   return blocks;
 }

@@ -30,7 +30,7 @@ describe('extract', function () {
 
   it('should extract statements before jasmine blocks', function () {
     var spec = parseAndExtract('before.js');
-    expect(spec.before.length).toBe(1);
+    expect(spec.before.length).toBe(2);
   });
 });
 
