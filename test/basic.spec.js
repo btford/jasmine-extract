@@ -22,6 +22,12 @@ describe('extract', function () {
     expect(spec.describes.foo.beforeEach.length).toBe(1);
   });
 
+  it('should work with afterEach blocks', function () {
+    var spec = parseAndExtract('after-each.js');
+    expect(keys(spec.describes)).toEqual(['foo']);
+    expect(spec.describes.foo.afterEach.length).toBe(1);
+  });
+
   it('extract statements before jasmine blocks', function () {
     var spec = parseAndExtract('before.js');
     expect(spec.before.length).toBe(1);

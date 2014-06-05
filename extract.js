@@ -4,6 +4,7 @@ module.exports = function (block) {
 
 var getDescribeBlocks   = getTypeofBlock('describe');
 var getItBlocks         = getTypeofBlock('it');
+var getAfterEachBlocks  = getTypeofBlock('afterEach');
 var getBeforeEachBlocks = getTypeofBlock('beforeEach');
 
 function extractBlocksFromBody (body) {
@@ -11,6 +12,7 @@ function extractBlocksFromBody (body) {
   return {
     before     : extractBeforeBlocks(body),
     beforeEach : extractBeforeEachBlocks(body),
+    afterEach  : getAfterEachBlocks(body),
     its        : extractItBlocks(body),
     describes  : extractDescribeBlocks(body)
   };
