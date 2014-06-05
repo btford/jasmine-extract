@@ -1,0 +1,21 @@
+{
+  "name": "jasmine-extract",
+  "version": "0.0.0",
+  "description": "extract jasmine tests so you can add them to your docs",
+  "main": "extract.js",
+  "scripts": {
+    "test": "jasmine-node test/*.spec.js"
+  },
+  "keywords": [
+    "jasmine",
+    "testing",
+    "documentation",
+    "docs"
+  ],
+  "author": "Brian Ford <btford@umich.edu>",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine-node": "^1.14.3",
+    "esprima": "^1.2.2"
+  }
+}

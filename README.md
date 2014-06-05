@@ -1,0 +1,4 @@
+# jasmine-extract
+
+## License
+MIT
