@@ -1,4 +1,4 @@
-# jasmine-extract [![Build Status](https://travis-ci.org/btford/jasmine-extract.svg?branch=master)](https://travis-ci.org/btford/jasmine-extract)
+# jasmine-extract [![Build Status](https://travis-ci.org/btford/jasmine-extract.svg?branch=master)](https://travis-ci.org/btford/jasmine-extract) [![Code Climate](https://codeclimate.com/github/btford/jasmine-extract.png)](https://codeclimate.com/github/btford/jasmine-extract)
 
 extract jasmine specs so you can add them to your docs
 
