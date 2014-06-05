@@ -64,6 +64,7 @@ function getTypeofBlock (type) {
 function getBlockName (block) {
   return block.expression.arguments[0].value;
 }
+
 function getBlockBody (block) {
   var body = block.expression.arguments[1].body;
   return body.body || body;
