@@ -1,48 +1,49 @@
 module.exports = function (block) {
-  return block.body.reduce(extractBlocks, {});
+  return extractBlocksFromBody(block.body);
 };
 
 var getDescribeBlocks   = getTypeofBlock('describe');
 var getItBlocks         = getTypeofBlock('it');
 var getBeforeEachBlocks = getTypeofBlock('beforeEach');
 
-function extractDescribeBlocks (block) {
-  return getDescribeBlocks(block.body).
-      reduce(extractBlocks, {});
-};
-
-function extractBlocks(acc, block) {
-  var name = getBlockName(block);
-  var body = getBlockBody(block);
-  acc[name] = {
-    name       : name,
-    //block    : block,
-
+function extractBlocksFromBody (body) {
+  body = body instanceof Array ? body : [body];
+  return {
     // statements before any other block
-    before     : extractBeforeBlocks(body),
-    beforeEach : extractBeforeEachBlocks(body),
+    //before     : extractBeforeBlocks(block),
+    //beforeEach : extractBeforeEachBlocks(block),
     its        : extractItBlocks(body),
     describes  : extractDescribeBlocks(body)
   };
-
-  return acc;
 }
 
-function extractItBlocks (block) {
-  return getDescribeBlocks(block.body).
+function extractDescribeBlocks (body) {
+  var blocks = getDescribeBlocks(body);
+
+  return blocks.reduce(function (acc, block) {
+    acc[getBlockName(block)] = extractBlocksFromBody(getBlockBody(block));
+    return acc;
+  }, {});
+}
+
+function extractItBlocks (body) {
+  return getItBlocks(body).
       reduce(function (acc, block) {
-        var name = getBlockName(block);
-        acc[name] = {
-          name: name,
-          body: getBlockBody(block)
-        };
+        acc[getBlockName(block)] = extractItBlock(block);
         return acc;
       }, {});
 }
 
+function extractItBlock (block) {
+  return {
+    name: getBlockName(block),
+    body: getBlockBody(block)
+  };
+}
+
 function extractBeforeBlocks (block) {
   var blocks = [];
-  block.body.some(function (block) {
+  block.body && block.body.some(function (block) {
     return isTypeofBlock('it') ||
         isTypeofBlock('describe') ||
         (blocks.push(block), true);
@@ -57,7 +58,11 @@ function extractBeforeEachBlocks (block) {
 function getTypeofBlock (type) {
   var proposition = isTypeofBlock(type);
   return function (body) {
-    return body.filter(proposition);
+    if (body.body) {
+      console.log(body)
+      throw new Error('')
+    }
+    return body ? body.filter(proposition) : [];
   };
 }
 
@@ -65,7 +70,8 @@ function getBlockName (block) {
   return block.expression.arguments[0].value;
 }
 function getBlockBody (block) {
-  return block.expression.arguments[1].body;
+  var body = block.expression.arguments[1].body;
+  return body.body || body;
 }
 
 function isTypeofBlock (type) {
