@@ -17,11 +17,11 @@ Takes an AST, returns an object corresponding to the test structure:
 ```javascript
 var esprima = require('esprima');
 var fs      = require('fs');
-var extract = require('../extract');
+var extract = require('extract');
 
 
 var contents = fs.readFileSync(__dirname + '/input.spec.js', 'utf8');
-var ast = esprima.parse(contents, {range: false});
+var ast = esprima.parse(contents);
 console.log(extract(ast));
 
 // logs this:
