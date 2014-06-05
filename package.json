@@ -18,5 +18,13 @@
   "devDependencies": {
     "jasmine-node": "^1.14.3",
     "esprima": "^1.2.2"
+  },
+  "bugs": {
+    "url": "https://github.com/btford/jasmine-extract/issues"
+  },
+  "homepage": "https://github.com/btford/jasmine-extract",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/btford/jasmine-extract.git"
   }
 }
