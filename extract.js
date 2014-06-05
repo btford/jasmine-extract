@@ -9,9 +9,8 @@ var getBeforeEachBlocks = getTypeofBlock('beforeEach');
 function extractBlocksFromBody (body) {
   body = body instanceof Array ? body : [body];
   return {
-    // statements before any other block
-    //before     : extractBeforeBlocks(block),
-    //beforeEach : extractBeforeEachBlocks(block),
+    before     : extractBeforeBlocks(body),
+    beforeEach : extractBeforeEachBlocks(body),
     its        : extractItBlocks(body),
     describes  : extractDescribeBlocks(body)
   };
@@ -41,27 +40,23 @@ function extractItBlock (block) {
   };
 }
 
-function extractBeforeBlocks (block) {
+function extractBeforeBlocks (body) {
   var blocks = [];
-  block.body && block.body.some(function (block) {
-    return isTypeofBlock('it') ||
-        isTypeofBlock('describe') ||
+  body.some(function (block) {
+    return isTypeofBlock('it')(block) ||
+        isTypeofBlock('describe')(block) ||
         (blocks.push(block), true);
   });
   return blocks;
 }
 
-function extractBeforeEachBlocks (block) {
-  return getBeforeEachBlocks(block.body);
+function extractBeforeEachBlocks (body) {
+  return getBeforeEachBlocks(body);
 }
 
 function getTypeofBlock (type) {
   var proposition = isTypeofBlock(type);
   return function (body) {
-    if (body.body) {
-      console.log(body)
-      throw new Error('')
-    }
     return body ? body.filter(proposition) : [];
   };
 }

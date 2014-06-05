@@ -1,34 +1,38 @@
 var esprima = require('esprima');
-var fs = require('fs');
-
+var fs      = require('fs');
 var extract = require('../extract');
 
-var parseAndExtract = function (file, opts) {
-  var contents = fs.readFileSync(__dirname + '/input/' + file, 'utf8');
-  var ast = esprima.parse(contents, {range: false});
-  return extract(ast, opts);
-};
-
 describe('extract', function () {
-  it('should work', function () {
+  it('should work with a simple spec', function () {
     var spec = parseAndExtract('basic.js');
     expect(keys(spec.describes)).toEqual(['foo']);
     expect(keys(spec.describes.foo.its)).toEqual(['should have x equal y']);
   });
 
-  // it('should work', function () {
-  //   var out = parseAndExtract('basic.js');
-  //   console.log(out)
-  //   // expect(out).
-  //   //     toEqual({ foo: { name: 'foo', describes: { bar: { name: 'bar', describes: {} } } } });
-  // });
+  it('should work with nested describes', function () {
+    var spec = parseAndExtract('nested-describe.js');
+    expect(keys(spec.describes)).toEqual(['foo']);
+    expect(keys(spec.describes.foo.describes)).toEqual(['bar']);
+  });
 
-  // it('extract before blocks', function () {
-  //   var out = parseAndExtract('before.js');
-  //   console.log(out)
-  //   //expect(out).toEqual([]);
-  // });
+  it('should work with beforeEach blocks', function () {
+    var spec = parseAndExtract('before-each.js');
+    expect(keys(spec.describes)).toEqual(['foo']);
+    expect(keys(spec.describes.foo.its)).toEqual(['should be great']);
+    expect(spec.describes.foo.beforeEach.length).toBe(1);
+  });
+
+  it('extract statements before jasmine blocks', function () {
+    var spec = parseAndExtract('before.js');
+    expect(spec.before.length).toBe(1);
+  });
 });
+
+function parseAndExtract (file, opts) {
+  var contents = fs.readFileSync(__dirname + '/input/' + file, 'utf8');
+  var ast = esprima.parse(contents, {range: false});
+  return extract(ast, opts);
+}
 
 function keys (obj) {
   return Object.keys(obj);
